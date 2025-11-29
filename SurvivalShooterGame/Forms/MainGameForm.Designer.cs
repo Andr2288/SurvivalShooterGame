@@ -48,6 +48,8 @@
             Name = "MainGameForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainGameForm";
+            KeyDown += MainGameForm_KeyDown;
+            KeyUp += MainGameForm_KeyUp;
             ResumeLayout(false);
         }
 

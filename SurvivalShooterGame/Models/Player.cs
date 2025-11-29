@@ -18,11 +18,13 @@ namespace SurvivalShooterGame.Models
         public int _speed { get; private set; } 
         public bool isDead { get; private set; }
         public Direction Direction { get; set; }
+        public bool IsMoving { get; set; }
 
         public Player()
         {
             _health = 100;
             _speed = 10;
+            IsMoving = false;
 
             Picture = new PictureBox
             {
@@ -34,6 +36,8 @@ namespace SurvivalShooterGame.Models
 
         public void Update(Control parentControl)
         {
+            if (!IsMoving) return;
+
             if (Direction == Direction.Left && Picture.Left > 0)
             {
                 Picture.Image = Properties.Resources.left;
@@ -55,7 +59,7 @@ namespace SurvivalShooterGame.Models
             if (Direction == Direction.Down && Picture.Top + Picture.Height < parentControl.Height)
             {
                 Picture.Image = Properties.Resources.down;
-                X += _speed;
+                Y += _speed;
             }
 
             Picture.Location = new Point(X, Y);
@@ -63,9 +67,11 @@ namespace SurvivalShooterGame.Models
 
         public void Draw(Control control, Point position)
         {
-            Picture.Location = new Point(position.X, position.Y);
-
-            control.Controls.Add(Picture);
+            if (!control.Controls.Contains(Picture))
+            {
+                Picture.Location = new Point(position.X, position.Y);
+                control.Controls.Add(Picture);
+            }
         }
     }
 }

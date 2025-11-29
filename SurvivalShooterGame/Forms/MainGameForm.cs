@@ -1,4 +1,5 @@
-﻿using SurvivalShooterGame.Models;
+﻿using SurvivalShooterGame.Managers;
+using SurvivalShooterGame.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,13 +35,7 @@ namespace SurvivalShooterGame.Forms
         }
 
         private GameState _currentState = GameState.Menu;
-
-        private int _score = 0;
-        private float _gameTime = 0f;
-        private float _enemySpawnTimer = 0f;
-        private const float ENEMY_SPAWN_INTERVAL = 2f;
-
-        private Player player;
+        private GameManager _gameManager;
 
         private bool _moveLeft = false;
         private bool _moveRight = false;
@@ -56,7 +51,8 @@ namespace SurvivalShooterGame.Forms
 
             this.BackColor = WINDOW_COLOR;
 
-            player = new Player();
+            _gameManager = new GameManager();
+            _gameManager.Initialize(this);
         }
 
         private void MainGameForm_KeyDown(object sender, KeyEventArgs e)
@@ -91,44 +87,41 @@ namespace SurvivalShooterGame.Forms
 
         private void MainUpdate()
         {
+            Direction? direction = null;
+            bool isMoving = false;
+
             if (_moveLeft)
             {
-                player.Direction = Direction.Left;
-                player.IsMoving = true;
+                direction = Direction.Left;
+                isMoving = true;
             }
             else if (_moveRight)
             {
-                player.Direction = Direction.Right;
-                player.IsMoving = true;
+                direction = Direction.Right;
+                isMoving = true;
             }
             else if (_moveUp)
             {
-                player.Direction = Direction.Up;
-                player.IsMoving = true;
+                direction = Direction.Up;
+                isMoving = true;
             }
             else if (_moveDown)
             {
-                player.Direction = Direction.Down;
-                player.IsMoving = true;
-            }
-            else
-            {
-                player.IsMoving = false;
+                direction = Direction.Down;
+                isMoving = true;
             }
 
-            player.Update(this);
+            _gameManager.HandlePlayerMovement(direction, isMoving);
+
+            float deltaTime = 0.017f;
+            _gameManager.Update(this, deltaTime);
+
             this.Invalidate();
-        }
-
-        public void MainDraw()
-        {
-            player.Draw(this, new Point(WINDOW_WIDTH / 2 - player.Picture.Width / 2, WINDOW_HEIGHT / 2 + 50));
         }
 
         private void mainGameTimer_Tick(object sender, EventArgs e)
         {
             MainUpdate();
-            MainDraw();
         }
     }
 }

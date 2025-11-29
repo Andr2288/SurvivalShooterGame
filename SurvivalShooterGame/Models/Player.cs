@@ -14,16 +14,16 @@ namespace SurvivalShooterGame.Models
         public int X { get; private set; }
         public int Y { get; private set; }
 
-        public int _health { get; private set; } 
-        public int _speed { get; private set; } 
-        public bool isDead { get; private set; }
+        public int Health { get; private set; }
+        public int Speed { get; private set; }
+        public bool IsDead { get; private set; }
         public Direction Direction { get; set; }
         public bool IsMoving { get; set; }
 
         public Player()
         {
-            _health = 100;
-            _speed = 10;
+            Health = 100;
+            Speed = 10;
             IsMoving = false;
 
             Picture = new PictureBox
@@ -42,25 +42,25 @@ namespace SurvivalShooterGame.Models
             if (Direction == Direction.Left && Picture.Left > 0)
             {
                 Picture.Image = Properties.Resources.left;
-                X -= _speed;
+                X -= Speed;
             }
 
             if (Direction == Direction.Right && Picture.Left + Picture.Width < parentControl.Width)
             {
                 Picture.Image = Properties.Resources.right;
-                X += _speed;
+                X += Speed;
             }
 
             if (Direction == Direction.Up && Picture.Top > 0)
             {
                 Picture.Image = Properties.Resources.up;
-                Y -= _speed;
+                Y -= Speed;
             }
 
             if (Direction == Direction.Down && Picture.Top + Picture.Height < parentControl.Height)
             {
                 Picture.Image = Properties.Resources.down;
-                Y += _speed;
+                Y += Speed;
             }
 
             Picture.Location = new Point(X, Y);
@@ -74,6 +74,28 @@ namespace SurvivalShooterGame.Models
                 Y = position.Y;
                 Picture.Location = new Point(X, Y);
                 control.Controls.Add(Picture);
+            }
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                Health = 0;
+                IsDead = true;
+                Picture.Image = Properties.Resources.dead;
+            }
+        }
+
+        public void Heal(int amount)
+        {
+            if (IsDead) return;
+
+            Health += amount;
+            if (Health > 100)
+            {
+                Health = 100;
             }
         }
     }

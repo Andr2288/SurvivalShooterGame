@@ -13,8 +13,8 @@ namespace SurvivalShooterGame.Forms
 {
     public partial class MainGameForm : Form
     {
-        private const int WINDOW_WIDTH = 800;
-        private const int WINDOW_HEIGHT = 600;
+        private const int WINDOW_WIDTH = 300 * 4;
+        private const int WINDOW_HEIGHT = 300 * 3;
 
         private readonly Color WINDOW_COLOR = Color.FromArgb(64, 64, 64);
 
@@ -122,7 +122,7 @@ namespace SurvivalShooterGame.Forms
 
         public void MainDraw()
         {
-            player.Draw(this, new Point(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 + 50));
+            player.Draw(this, new Point(WINDOW_WIDTH / 2 - player.Picture.Width / 2, WINDOW_HEIGHT / 2 + 50));
         }
 
         private void mainGameTimer_Tick(object sender, EventArgs e)

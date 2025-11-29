@@ -28,7 +28,8 @@ namespace SurvivalShooterGame.Models
 
             Picture = new PictureBox
             {
-                SizeMode = PictureBoxSizeMode.AutoSize
+                SizeMode = PictureBoxSizeMode.AutoSize,
+                Image = Properties.Resources.up
             };
 
             Direction = Direction.Up;
@@ -69,7 +70,9 @@ namespace SurvivalShooterGame.Models
         {
             if (!control.Controls.Contains(Picture))
             {
-                Picture.Location = new Point(position.X, position.Y);
+                X = position.X;
+                Y = position.Y;
+                Picture.Location = new Point(X, Y);
                 control.Controls.Add(Picture);
             }
         }

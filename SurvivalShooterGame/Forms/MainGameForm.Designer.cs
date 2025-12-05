@@ -102,6 +102,7 @@
             Text = "MainGameForm";
             KeyDown += MainGameForm_KeyDown;
             KeyUp += MainGameForm_KeyUp;
+            MouseClick += MainGameForm_MouseClick;
             hudPanel.ResumeLayout(false);
             hudPanel.PerformLayout();
             ResumeLayout(false);

@@ -132,5 +132,13 @@ namespace SurvivalShooterGame.Forms
         {
             MainUpdate();
         }
+
+        private void MainGameForm_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                _gameManager.Shoot(e.Location);
+            }
+        }
     }
 }

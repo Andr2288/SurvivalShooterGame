@@ -1,4 +1,5 @@
 ﻿using SurvivalShooterGame.Models;
+using SurvivalShooterGame.Models.SurvivalShooterGame.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace SurvivalShooterGame.Managers
         private const float ENEMY_SPAWN_INTERVAL = 2f;
 
         public Player Player { get; private set; }
+        public List<Bullet> Bullets { get; private set; }
         public int Score { get; private set; }
         public float GameTime { get; private set; }
         public bool IsGameOver { get; private set; }
@@ -24,6 +26,7 @@ namespace SurvivalShooterGame.Managers
         public GameManager()
         {
             Player = new Player();
+            Bullets = new List<Bullet>();
             Score = 0;
             GameTime = 0f;
             IsGameOver = false;
@@ -44,6 +47,7 @@ namespace SurvivalShooterGame.Managers
             if (IsGameOver) return;
 
             Player.Update(parentControl);
+            UpdateBullets(parentControl);
 
             GameTime += deltaTime;
             _enemySpawnTime += deltaTime;
@@ -52,6 +56,45 @@ namespace SurvivalShooterGame.Managers
             {
                 _enemySpawnTime = 0f;
                 // TODO: Spawn enemy
+            }
+        }
+
+        public void Shoot(Point targetPosition)
+        {
+            if (IsGameOver) return;
+
+            Point playerCenter = new Point(
+                Player.X + Player.Picture.Width / 2,
+                Player.Y + Player.Picture.Height / 2
+            );
+
+            Bullet bullet = new Bullet(playerCenter, targetPosition);
+            Bullets.Add(bullet);
+        }
+
+        private void UpdateBullets(Control parentControl)
+        {
+            for (int i = Bullets.Count - 1; i >= 0; i--)
+            {
+                Bullet bullet = Bullets[i];
+
+                if (!bullet.IsActive)
+                {
+                    bullet.Remove(parentControl);
+                    Bullets.RemoveAt(i);
+                    continue;
+                }
+
+                // Додаємо кулю на форму якщо ще не додана
+                bullet.Draw(parentControl);
+                bullet.Update();
+
+                // Перевіряємо чи куля за межами екрану
+                if (bullet.IsOutOfBounds(WINDOW_WIDTH, WINDOW_HEIGHT))
+                {
+                    bullet.Remove(parentControl);
+                    Bullets.RemoveAt(i);
+                }
             }
         }
 
@@ -88,6 +131,13 @@ namespace SurvivalShooterGame.Managers
             IsGameOver = false;
             _enemySpawnTime = 0f;
             Player = new Player();
+
+            // Очищуємо кулі
+            foreach (var bullet in Bullets)
+            {
+                bullet.IsActive = false;
+            }
+            Bullets.Clear();
         }
     }
 }

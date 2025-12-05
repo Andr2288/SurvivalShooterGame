@@ -61,7 +61,7 @@
             timeLabel.AutoSize = true;
             timeLabel.Font = new Font("Calibri", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 204);
             timeLabel.ForeColor = Color.WhiteSmoke;
-            timeLabel.Location = new Point(1005, 33);
+            timeLabel.Location = new Point(970, 33);
             timeLabel.Name = "timeLabel";
             timeLabel.Size = new Size(97, 41);
             timeLabel.TabIndex = 1;

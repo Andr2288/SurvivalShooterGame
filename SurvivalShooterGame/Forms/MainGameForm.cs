@@ -116,7 +116,16 @@ namespace SurvivalShooterGame.Forms
             float deltaTime = 0.017f;
             _gameManager.Update(this, deltaTime);
 
+            UpdateHUD();
+
             this.Invalidate();
+        }
+
+        private void UpdateHUD()
+        {
+            hpLabel.Text = $"HP: {_gameManager.Player.Health}";
+            scoreLabel.Text = $"Score: {_gameManager.Score}";
+            timeLabel.Text = $"Time: {_gameManager.GetFormattedTime()}";
         }
 
         private void mainGameTimer_Tick(object sender, EventArgs e)

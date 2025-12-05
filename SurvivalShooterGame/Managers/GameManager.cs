@@ -55,6 +55,13 @@ namespace SurvivalShooterGame.Managers
             }
         }
 
+        public string GetFormattedTime()
+        {
+            int minutes = (int)(GameTime / 60);
+            int seconds = (int)(GameTime % 60);
+            return $"{minutes:D2}:{seconds:D2}";
+        }
+
         public void HandlePlayerMovement(Direction? direction, bool isMoving)
         {
             if (direction.HasValue)

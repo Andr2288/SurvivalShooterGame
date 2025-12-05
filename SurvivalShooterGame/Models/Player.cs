@@ -51,7 +51,7 @@ namespace SurvivalShooterGame.Models
                 X += Speed;
             }
 
-            if (Direction == Direction.Up && Picture.Top > 0)
+            if (Direction == Direction.Up && Picture.Top > 100)
             {
                 Picture.Image = Properties.Resources.up;
                 Y -= Speed;

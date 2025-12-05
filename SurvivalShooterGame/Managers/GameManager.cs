@@ -270,5 +270,15 @@ namespace SurvivalShooterGame.Managers
             }
             Enemies.Clear();
         }
+
+        public void ClearForm(Control parentControl)
+        {
+            // Видаляємо всі ігрові об'єкти з форми
+            var controlsToRemove = parentControl.Controls.OfType<PictureBox>().ToList();
+            foreach (var control in controlsToRemove)
+            {
+                parentControl.Controls.Remove(control);
+            }
+        }
     }
 }

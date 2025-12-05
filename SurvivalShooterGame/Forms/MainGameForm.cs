@@ -118,7 +118,44 @@ namespace SurvivalShooterGame.Forms
 
             UpdateHUD();
 
+            // Перевірка Game Over
+            if (_gameManager.IsGameOver)
+            {
+                ShowGameOverScreen();
+            }
+
             this.Invalidate();
+        }
+
+        private void ShowGameOverScreen()
+        {
+            mainGameTimer.Stop();
+
+            GameOverForm gameOverForm = new GameOverForm(_gameManager.Score, _gameManager.GetFormattedTime());
+            gameOverForm.ShowDialog(this);
+
+            if (gameOverForm.ShouldRestart)
+            {
+                RestartGame();
+            }
+            else if (gameOverForm.ShouldExit)
+            {
+                this.Close();
+            }
+        }
+
+        private void RestartGame()
+        {
+            // Скидаємо прапорці руху
+            _moveLeft = false;
+            _moveRight = false;
+            _moveUp = false;
+            _moveDown = false;
+
+            _gameManager.ClearForm(this);
+            _gameManager.Reset();
+            _gameManager.Initialize(this);
+            mainGameTimer.Start();
         }
 
         private void UpdateHUD()
@@ -126,7 +163,7 @@ namespace SurvivalShooterGame.Forms
             hpLabel.Text = $"HP: {_gameManager.Player.Health}";
             scoreLabel.Text = $"Score: {_gameManager.Score}";
             timeLabel.Text = $"Time: {_gameManager.GetFormattedTime()}";
-        }
+        }   
 
         private void mainGameTimer_Tick(object sender, EventArgs e)
         {
